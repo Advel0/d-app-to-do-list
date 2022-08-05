@@ -303,6 +303,7 @@ function App() {
     setProvider(newProvider);
 
     window.ethereum.on('accountsChanged', async (accs)=> {
+      
       setAccounts(accs);
     })
 
@@ -333,6 +334,7 @@ function App() {
       } else {
         if (accounts.length != 0) {
           setWalletRegistered(false);
+          setAddTaskInterface(null);
         }
 
         setTasks([]);
