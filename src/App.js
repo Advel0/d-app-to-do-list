@@ -306,7 +306,6 @@ function App() {
     setProvider(newProvider);
 
     window.ethereum.on('accountsChanged', async (accs)=> {
-      
       setAccounts(accs);
     })
 
@@ -331,10 +330,14 @@ function App() {
     
     const main = async ()=>{
       if ( await contract.userExists(accounts[0]) ){
+        
         setWalletRegistered(true)
+        
         const currentUserContractAddress = await contract.getUser(accounts[0]);
+        setTasks(await loadTasks(new ethers.Contract(currentUserContractAddress, userContractAbi, provider)))
         setUserContractAddress(currentUserContractAddress);
       } else {
+        
         if (accounts.length != 0) {
           setWalletRegistered(false);
           setAddTaskInterface(null);
@@ -343,8 +346,10 @@ function App() {
         setTasks([]);
       }
     }
+    
     if (accounts.length != 0){
       main();
+
       setConnectButton(null);
     } else {
       setConnectButton(generateButton("Connect", async() => await connectWallet(provider), '50px'));
@@ -361,14 +366,15 @@ function App() {
     if (userContractAddress != null) {
       const currentUserContract = new ethers.Contract(userContractAddress, userContractAbi, provider);
       setUserContract(currentUserContract);
-      
     }
+    
   }, [userContractAddress])
 
   useEffect( ()=> {
     const main = async ()=> {
       const loadedTasks = await loadTasks(userContract);
       setTasks(loadedTasks);
+
 
       provider.on(filter_add(userContractAddress), async (title)=>{
         const loadedTasks = await loadTasks(userContract);

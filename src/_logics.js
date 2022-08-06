@@ -68,9 +68,10 @@ export const formatTasks = (tasks, contractWithSigner)=>{
 export const generateAddTaskInterface = (provider, newTaskTitle, contractWithSigner)=> {
     return  <div>
                 <span style={{marginRight:'5px' }}>
-                    <TextField ref={newTaskTitle} id="outlined-basic" label="Outlined" variant="outlined" placeholder='enter task'
-                    
-                    inputProps={{
+                    <input ref={newTaskTitle} id="outlined-basic" label="Outlined" variant="outlined" placeholder='    enter task'
+                    style={{height: '34.5px', marginTop: '4px', borderRadius: '3px',
+                    borderStyle:'none'}}
+                    inputprops={{
                         style: {
                         fontSize: '14px',
                         },
@@ -78,11 +79,10 @@ export const generateAddTaskInterface = (provider, newTaskTitle, contractWithSig
                     />
                 </span>
                 {generateButton('add task', 
-                ()=>{
-                    const signer = provider.getSigner();
+                (e)=>{
                     addTask( contractWithSigner, newTaskTitle.current.value);
                     newTaskTitle.current.value = '';
-                    }, '53.13px'
+                    }, '53x'
                 )}
             </div>
 }
