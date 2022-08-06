@@ -5,7 +5,10 @@ import { useEffect } from 'react';
 import { useRef } from 'react';
 import React from 'react';
 import { ethers } from 'ethers';
-import { loadTasks, addTask, removeTask, completeTask, formatTasks, generateAddTaskInterface } from './_logics';
+import { loadTasks, addTask, removeTask, completeTask, formatTasks, generateAddTaskInterface, generateButton } from './_logics';
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import Box from '@mui/material/Box';
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -21,7 +24,7 @@ function App() {
   const [RegisterWalletButton, setRegisterWalletButton] = useState(null);
   const [AddTaskInterface, setAddTaskInterface ] = useState(null);
   const [TasksRepresentation, setTasksRepresentation ] = useState(formatTasks(tasks, contractWithSigner));
-  const [connectButton, setConnectButton] = useState()
+  const [connectButton, setConnectButton] = useState(null)
   
 
   const newTaskTitle = useRef(0);
@@ -320,7 +323,7 @@ function App() {
       const newContractWithSigner = new ethers.Contract(contractAddress, contractAbi, provider.getSigner());
       setContractWithSigner(newContractWithSigner);
 
-      setConnectButton(<button onClick={async() => await connectWallet(provider)}>Connect</button>);
+      setConnectButton(generateButton("Connect", async() => await connectWallet(provider), '50px'));
     }
   }, [provider])
 
@@ -344,11 +347,12 @@ function App() {
       main();
       setConnectButton(null);
     } else {
-      setConnectButton(<button onClick={async() => await connectWallet(provider)}>Connect</button>);
+      setConnectButton(generateButton("Connect", async() => await connectWallet(provider), '50px'));
       setTasks([]);
       setAddTaskInterface(null);
       setUserContractAddress(null);
       setUserContract(null);
+      setWalletRegistered(null);
     }
     
   }, [accounts]);
@@ -400,7 +404,7 @@ function App() {
 
   useEffect( ()=>{
     if (walletRegistered == false ) {
-      setRegisterWalletButton(<button onClick={registerWallet}>Register Wallet</button>)
+      setRegisterWalletButton(generateButton('Register Wallet', registerWallet, '50px'))
     } else if (walletRegistered == true) {
       setRegisterWalletButton(null);
     }
@@ -419,20 +423,43 @@ function App() {
 
 
   return (
-    <div className="App">
-      <h1>DApp todo List | </h1> 
-      <h4>current account : {accounts[0]}</h4>
+    <Container maxWidth="sm" className='App' >
+      <Box sx={{ bgcolor: '#cfe8fc', height: '100vh' }} >
+      
+      <Box sx={{
+          display: 'flex',
+          justifyContent: 'space-around',
+          p: 1,
+          m: 1,
+        }}>
+
+        <Box sx={{
+          bgcolor: '',
+          width:'250px', 
+          height: '35px', 
+          alignContent: 'center', 
+          fontSize: '25px',
+          borderRadius: 2,
+          fontFamily : 'roboto'
+          }}>
+        | DApp todo List | 
+        </Box>
+
+      </Box>
+      <h4 style={{fontFamily: 'roboto'}}>current account : {accounts[0]}</h4>
+      
       { connectButton }
 
       { RegisterWalletButton }
       { AddTaskInterface }
      
       <div>
-        <h3>tasks: </h3>
+        <h3 style={{fontFamily: 'roboto'}}x>tasks: </h3>
 
         { TasksRepresentation }
       </div>
-    </div>
+      </Box>
+    </Container>
   );
 }
 
