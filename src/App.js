@@ -332,7 +332,9 @@ function App() {
       if ( await contract.userExists(accounts[0]) ){
         
         setWalletRegistered(true)
-        
+        setAddTaskInterface(
+          generateAddTaskInterface(provider, newTaskTitle, contractWithSigner)
+        )
         const currentUserContractAddress = await contract.getUser(accounts[0]);
         setTasks(await loadTasks(new ethers.Contract(currentUserContractAddress, userContractAbi, provider)))
         setUserContractAddress(currentUserContractAddress);
@@ -389,9 +391,6 @@ function App() {
         setTasks( loadedTasks );
       });
 
-      setAddTaskInterface(
-        generateAddTaskInterface(provider, newTaskTitle, contractWithSigner)
-      )
 
     }
     if (userContract != null) {
