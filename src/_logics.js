@@ -41,7 +41,7 @@ export const formatTasks = (tasks, contractWithSigner)=>{
                     borderColor: 'grey.300'
                 }}
             >
-                props.title | <span onClick={()=>completeTask(contractWithSigner, props.id)}>Done</span> <span onClick={()=>removeTask(contractWithSigner, props.id)}>Del</span>
+                {props.title} | <span onClick={()=>completeTask(contractWithSigner, props.id)}>Done</span> <span onClick={()=>removeTask(contractWithSigner, props.id)}>Del</span>
             </Box>
         )
     }
